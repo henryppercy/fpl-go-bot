@@ -24,3 +24,5 @@ go.work
 # IDE settings
 .vscode
 .idea
+
+/tmp
