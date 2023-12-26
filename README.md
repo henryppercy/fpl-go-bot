@@ -7,7 +7,7 @@ A Go-based application designed to retrieve, format, and send Fantasy Premier Le
 - **WhatsApp Integration**: Sends a formatted version of a FPL table directly to any specified WhatsApp contact or group.
 - **Detailed Standings**: Includes teams, current positions, total points, and recent movements in the league standings.
 
-## Upcoming Enhancements
+## Future Plans
 This is a work in progress, so in future I plan to add:
 - **Automated Updates**: Implementing a cron job to send regular updates, ensuring you never miss the latest standings.
 - **Diverse Hosting Options**: Plans to support various hosting solutions to enhance accessibility and ease of use.
