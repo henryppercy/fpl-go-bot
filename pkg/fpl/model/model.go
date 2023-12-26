@@ -39,14 +39,44 @@ type LeagueData struct {
 func (ld LeagueData) String() string {
 	var sb strings.Builder
 
-	sb.WriteString(fmt.Sprintf("League ID: %d\n", ld.League.ID))
-	sb.WriteString(fmt.Sprintf("League Name: %s\n", ld.League.Name))
-	sb.WriteString(fmt.Sprintf("Created: %v\n", ld.League.Created))
-	sb.WriteString("Standings:\n")
+	sb.WriteString(fmt.Sprintf("🏆 *%s*\n\n", ld.League.Name))
 
 	for _, s := range ld.Standings.Results {
-		sb.WriteString(fmt.Sprintf(" - %s: Pos %d (Prev Pos: %d, Total: %d)\n", s.EntryName, s.Rank, s.LastRank, s.Total))
+		movementEmoji := getMovementEmoji(s.Rank, s.LastRank)
+		medalEmoji := getMedalEmoji(s.Rank)
+
+		line := fmt.Sprintf("%d. %s: %d %s", s.Rank, s.EntryName, s.Total, movementEmoji)
+
+		if medalEmoji != "" {
+			line = medalEmoji + " " + line
+		}
+
+		sb.WriteString(line + "\n")
 	}
 
 	return sb.String()
+}
+
+func getMovementEmoji(currentPos, prevPos int) string {
+	switch {
+	case currentPos < prevPos:
+		return "🔼"
+	case currentPos > prevPos:
+		return "🔽"
+	default:
+		return "➖"
+	}
+}
+
+func getMedalEmoji(pos int) string {
+	switch {
+	case pos == 1:
+		return "🥇"
+	case pos == 2:
+		return "🥈"
+	case pos == 3:
+		return "🥉"
+	default:
+		return ""
+	}
 }
