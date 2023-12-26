@@ -4,7 +4,7 @@ A Go-based application designed to retrieve, format, and send Fantasy Premier Le
 
 ## Current Features
 - **Command Line Interface**: Accessible via command line by suppling the league ID as an argument.
-- **WhatsApp Integration**: Sends a formatted version of a FPL table directly to any specified WhatsApp contact or group.
+- **WhatsApp Integration**: Sends a formatted version of an FPL table directly to any specified WhatsApp contact or group.
 - **Detailed Standings**: Includes teams, current positions, total points, and recent movements in the league standings.
 
 ## Future Plans
