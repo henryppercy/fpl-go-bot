@@ -1,4 +1,4 @@
-package model
+package fpl
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 	"time"
 )
 
-type League struct {
+type league struct {
 	ID      int       `json:"id"`
 	Name    string    `json:"name"`
 	Created time.Time `json:"created"`
 }
 
-type PlayerStanding struct {
+type playerStanding struct {
 	ID         int    `json:"id"`
 	EventTotal int    `json:"event_total"`
 	PlayerName string `json:"player_name"`
@@ -24,35 +24,35 @@ type PlayerStanding struct {
 	EntryName  string `json:"entry_name"`
 }
 
-type Standings struct {
+type standings struct {
 	HasNext bool             `json:"has_next"`
 	Page    int              `json:"page"`
-	Results []PlayerStanding `json:"results"`
+	Results []playerStanding `json:"results"`
 }
 
 type LeagueData struct {
-	League      League    `json:"league"`
-	Standings   Standings `json:"standings"`
+	League      league    `json:"league"`
+	Standings   standings `json:"standings"`
 	LastUpdated time.Time `json:"last_updated_data"`
 }
 
 func (ld LeagueData) String() string {
 	var sb strings.Builder
-
 	sb.WriteString(fmt.Sprintf("🏆 *%s*\n\n", ld.League.Name))
 
 	for _, s := range ld.Standings.Results {
 		movementEmoji := getMovementEmoji(s.Rank, s.LastRank)
 		medalEmoji := getMedalEmoji(s.Rank)
 
-		line := fmt.Sprintf("%d. %s: %d %s", s.Rank, s.EntryName, s.Total, movementEmoji)
-
+		line := fmt.Sprintf("%s _*%d*_. %s: *%d*", movementEmoji, s.Rank, s.EntryName, s.Total)
 		if medalEmoji != "" {
-			line = medalEmoji + " " + line
+			line = line + " " + medalEmoji
 		}
 
 		sb.WriteString(line + "\n")
 	}
+
+	sb.WriteString(fmt.Sprintf("\n🤖 _Automated message from FPL Go Bot_"))
 
 	return sb.String()
 }
@@ -64,7 +64,7 @@ func getMovementEmoji(currentPos, prevPos int) string {
 	case currentPos > prevPos:
 		return "🔽"
 	default:
-		return "➖"
+		return "⏺️"
 	}
 }
 

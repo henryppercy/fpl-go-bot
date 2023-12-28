@@ -1,17 +1,17 @@
-package client
+package notify
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/henryppercy/fpl-go-bot/pkg/notify/model"
 	"net/http"
+	"os"
 )
 
 func Send(id, body string) (*http.Response, error) {
 	url := "https://gate.whapi.cloud/messages/text"
 
-	message := model.Message{
+	message := Message{
 		To:   id,
 		Body: body,
 	}
@@ -26,9 +26,11 @@ func Send(id, body string) (*http.Response, error) {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 
+	bearer := os.Getenv("BEARER")
+
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("Authorization", "Bearer ")
+	req.Header.Set("Authorization", "Bearer "+bearer)
 
 	client := &http.Client{}
 	res, err := client.Do(req)

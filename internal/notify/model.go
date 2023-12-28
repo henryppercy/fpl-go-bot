@@ -1,4 +1,4 @@
-package model
+package notify
 
 type Message struct {
 	To   string `json:"to"`
