@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/henryppercy/fpl-go-bot/internal/fpl"
-	"github.com/henryppercy/fpl-go-bot/internal/notify"
+	"github.com/henryppercy/fpl-go-bot/internal/whatsapp"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -35,7 +35,7 @@ func main() {
 		whatsAppMsgId := os.Getenv("WHATSAPP_MSG_ID")
 
 		var res *http.Response
-		res, err = notify.Send(whatsAppMsgId, league.String())
+		res, err = whatsapp.Send(whatsAppMsgId, league.String())
 		if err != nil {
 			log.Printf("Error fetching sending whatsapp message: %v\n", err)
 		}

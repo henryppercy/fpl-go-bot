@@ -1,4 +1,4 @@
-package notify
+package whatsapp
 
 type Message struct {
 	To   string `json:"to"`
