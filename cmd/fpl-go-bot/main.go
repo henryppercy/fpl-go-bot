@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/henryppercy/fpl-go-bot/internal/discord"
 	"github.com/henryppercy/fpl-go-bot/internal/fpl"
-	"github.com/henryppercy/fpl-go-bot/internal/whatsapp"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -32,10 +32,10 @@ func main() {
 			continue
 		}
 
-		whatsAppMsgId := os.Getenv("WHATSAPP_MSG_ID")
+		channelId := os.Getenv("CHANNEL_ID")
 
 		var res *http.Response
-		res, err = whatsapp.Send(whatsAppMsgId, league.String())
+		res, err = discord.Send(channelId, league.String())
 		if err != nil {
 			log.Printf("Error fetching sending whatsapp message: %v\n", err)
 		}

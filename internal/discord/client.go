@@ -1,4 +1,4 @@
-package whatsapp
+package discord
 
 import (
 	"bytes"
@@ -8,15 +8,15 @@ import (
 	"os"
 )
 
-func Send(id, body string) (*http.Response, error) {
-	url := "https://gate.whapi.cloud/messages/text"
+func Send(id, content string) (*http.Response, error) {
+	token := os.Getenv("BOT_TOKEN")
+	url := fmt.Sprintf("%s/channels/%s/messages", os.Getenv("DISCORD_URL"), id)
 
-	message := Message{
-		To:   id,
-		Body: body,
+	body := Body{
+		Content: content,
 	}
 
-	jsonData, err := json.Marshal(message)
+	jsonData, err := json.Marshal(body)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling JSON: %w", err)
 	}
@@ -26,11 +26,9 @@ func Send(id, body string) (*http.Response, error) {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 
-	bearer := os.Getenv("BEARER")
-
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+bearer)
+	req.Header.Set("Authorization", token)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
