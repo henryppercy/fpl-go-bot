@@ -6,6 +6,18 @@ import (
 	"time"
 )
 
+type status struct {
+	BonusAdded bool   `json:"bonus_added"`
+	Date       string `json:"date"`
+	Event      int    `json:"event"`
+	Points     string `json:"points"`
+}
+
+type EventStatus struct {
+	Status  []status `json:"status"`
+	Leagues string   `json:"leagues"`
+}
+
 type event struct {
 	ID                     int            `json:"id"`
 	Name                   string         `json:"name"`
