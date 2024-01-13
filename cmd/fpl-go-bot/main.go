@@ -1,9 +1,13 @@
 package main
 
 import (
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/henryppercy/fpl-go-bot/internal/fpl"
 	"github.com/joho/godotenv"
-	"log"
 )
 
 func main() {
@@ -13,4 +17,10 @@ func main() {
 	}
 
 	fpl.IntiCron()
+
+	sig := make(chan os.Signal, 1)
+    signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+
+	<-sig
+    log.Println("Shutting down the application")
 }
