@@ -18,6 +18,47 @@ type EventStatus struct {
 	Leagues string   `json:"leagues"`
 }
 
+func (es EventStatus) DateInCurrentEvent(date time.Time) bool {
+	for _, status := range es.Status {
+		eventDate, err := time.Parse("2006-01-02", status.Date)
+		if err != nil {
+			fmt.Println("Error parsing date:", err)
+			continue
+		}
+
+		if sameDate(eventDate, date) {
+			return true
+		}
+	}
+	return false
+}
+
+func (es EventStatus) BonusAdded(date time.Time) bool {
+	if !es.DateInCurrentEvent(date) {
+		return false
+	}
+
+	for _, status := range es.Status {
+		eventDate, err := time.Parse("2006-01-02", status.Date)
+		if err != nil {
+			fmt.Println("Error parsing date:", err)
+			continue
+		}
+
+		if sameDate(eventDate, date) && status.BonusAdded {
+			return true
+		}
+	}
+	return false
+}
+
+func sameDate(t1, t2 time.Time) bool {
+	y1, m1, d1 := t1.Date()
+	y2, m2, d2 := t2.Date()
+
+	return y1 == y2 && m1 == m2 && d1 == d2
+}
+
 type event struct {
 	ID                     int            `json:"id"`
 	Name                   string         `json:"name"`
