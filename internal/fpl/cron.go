@@ -7,8 +7,10 @@ import (
 	"os"
 	"strconv"
 	"time"
+
 	"github.com/henryppercy/fpl-go-bot/internal/discord"
-	"github.com/robfig/cron"
+	"github.com/henryppercy/fpl-go-bot/internal/utils"
+	"github.com/robfig/cron/v3"
 )
 
 var messageSentToday bool
@@ -17,13 +19,22 @@ func IntiCron() {
 	c := cron.New()
 
 	c.AddFunc("0 16 * * *", func() {
+		utils.LogPrettyTime()
+		fmt.Print("Resetting message sent.")
+
         messageSentToday = false
     })
 
 	c.AddFunc(("0 11-15 * * *"), func() {
-		if messageSentToday {
-            return
-        }
+		fmt.Println()
+		utils.LogPrettyTime()
+
+		if (messageSentToday) {
+			fmt.Print("Message already sent today.\n")
+			return
+		} else {
+			fmt.Print("Message has not been sent yet today.\n")
+		}
 
 		es, err := GetEventStatus()
 		if err != nil {
@@ -31,11 +42,11 @@ func IntiCron() {
 		}
 
 		ba := es.BonusAdded(time.Now().AddDate(0, 0, -1))
-		if ba {
+		if (ba) {
 			fmt.Print("Bonus points have been added!.\n")
+
 			dispatchLeagueMessage()
 			messageSentToday = true
-
 		} else {
 			fmt.Print("Bonus points not added yet.\n")
 		}
