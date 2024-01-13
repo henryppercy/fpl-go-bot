@@ -2,8 +2,8 @@ package models
 
 import (
 	"fmt"
-	"time"
 	"github.com/henryppercy/fpl-go-bot/internal/utils"
+	"time"
 )
 
 type status struct {
