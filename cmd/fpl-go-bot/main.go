@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -17,19 +18,20 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	leagueIds := os.Args[1:]
+	es, err := fpl.GetEventStatus()
+	if err != nil {
+		log.Fatal("Error getting event status")
+	}
 
-	for _, idStr := range leagueIds {
-		id, err := strconv.Atoi(idStr)
-		if err != nil {
-			log.Printf("Invalid league ID '%s': %v\n", idStr, err)
-			continue
-		}
+	ba := es.BonusAdded(time.Now().AddDate(0, 0, -1))
+	if ba {
+		fmt.Print("Bonus points added!\n")
+
+		id, _ := strconv.Atoi(os.Getenv("LEAGUE_ID"))
 
 		league, err := fpl.GetLeague(id)
 		if err != nil {
 			log.Printf("Error fetching league data for ID %d: %v\n", id, err)
-			continue
 		}
 
 		channelId := os.Getenv("CHANNEL_ID")
@@ -37,13 +39,13 @@ func main() {
 		var res *http.Response
 		res, err = discord.Send(channelId, league.String())
 		if err != nil {
-			log.Printf("Error fetching sending whatsapp message: %v\n", err)
+			log.Printf("Error sending discord message: %v\n", err)
 		}
 
 		if res != nil {
-			fmt.Printf("WhatsApp sent successfully with code: %d\n", res.StatusCode)
+			fmt.Printf("Discord message sent successfully with code: %d\n", res.StatusCode)
 		}
-
-		fmt.Printf("%+v\n", league.String())
+	} else {
+		fmt.Print("Event not yet full complete.\n")
 	}
 }
