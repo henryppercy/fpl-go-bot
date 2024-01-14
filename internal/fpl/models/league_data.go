@@ -52,7 +52,8 @@ func (ld LeagueData) String() string {
 		sb.WriteString(line + "\n")
 	}
 
-	sb.WriteString(fmt.Sprintf("\n🤖 _Automated message from FPL Go Bot_"))
+	formattedTime := ld.LastUpdated.Format("January 2 at 15:04")
+	sb.WriteString(fmt.Sprintf("\n*⏱️ Last updated %s*", formattedTime))
 
 	return sb.String()
 }
