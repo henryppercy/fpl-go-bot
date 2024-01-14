@@ -16,13 +16,13 @@ var messageSentToday bool
 func IntiCron() {
 	c := cron.New()
 
-	c.AddFunc("57 16 * * *", func() {
+	c.AddFunc("0 16 * * *", func() {
 		logger.InfoLogger.Println("resetting message sent boolean")
 
 		messageSentToday = false
 	})
 
-	c.AddFunc(("56 11-16 * * *"), func() {
+	c.AddFunc(("0 11-15 * * *"), func() {
 		if messageSentToday {
 			logger.InfoLogger.Println("message has already been sent today")
 			return
