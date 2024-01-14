@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/henryppercy/fpl-go-bot/internal/discord"
 	"github.com/henryppercy/fpl-go-bot/internal/fpl"
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
 	"github.com/joho/godotenv"
@@ -20,6 +21,7 @@ func main() {
 
 	fmt.Println("Application starting...")
 	fpl.IntiCron()
+	discord.DispatchInitMessage()
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)

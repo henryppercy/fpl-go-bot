@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/henryppercy/fpl-go-bot/internal/logger"
 )
 
 func Send(id, content string) (*http.Response, error) {
@@ -42,4 +44,23 @@ func Send(id, content string) (*http.Response, error) {
 	}
 
 	return res, nil
+}
+
+func DispatchInitMessage() error {
+	channelId := os.Getenv("CHANNEL_ID")
+
+	msg := "*🤖 FPL Go Bot has been initialised*"
+
+	var res *http.Response
+	res, err := Send(channelId, msg)
+	if err != nil {
+		logger.ErrorLogger.Printf("error sending discord message: %v\n", err)
+		return err
+	}
+
+	if res != nil {
+		logger.InfoLogger.Printf("discord message sent successfully with code: %d\n", res.StatusCode)
+	}
+
+	return nil
 }
