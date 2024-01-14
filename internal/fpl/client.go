@@ -3,9 +3,10 @@ package fpl
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/henryppercy/fpl-go-bot/internal/fpl/models"
 	"io"
 	"net/http"
+
+	"github.com/henryppercy/fpl-go-bot/internal/fpl/models"
 )
 
 func GetEventStatus() (models.EventStatus, error) {

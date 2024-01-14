@@ -1,15 +1,13 @@
 package fpl
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/henryppercy/fpl-go-bot/internal/discord"
-	"github.com/henryppercy/fpl-go-bot/internal/utils"
+	"github.com/henryppercy/fpl-go-bot/internal/logger"
 	"github.com/robfig/cron/v3"
 )
 
@@ -18,49 +16,51 @@ var messageSentToday bool
 func IntiCron() {
 	c := cron.New()
 
-	c.AddFunc("0 16 * * *", func() {
-		utils.LogPrettyTime()
-		fmt.Print("Resetting message sent.")
+	c.AddFunc("57 16 * * *", func() {
+		logger.InfoLogger.Println("resetting message sent boolean")
 
-        messageSentToday = false
-    })
+		messageSentToday = false
+	})
 
-	c.AddFunc(("0 11-15 * * *"), func() {
-		fmt.Println()
-		utils.LogPrettyTime()
-
-		if (messageSentToday) {
-			fmt.Print("Message already sent today.\n")
+	c.AddFunc(("56 11-16 * * *"), func() {
+		if messageSentToday {
+			logger.InfoLogger.Println("message has already been sent today")
 			return
 		} else {
-			fmt.Print("Message has not been sent yet today.\n")
+			logger.InfoLogger.Println("message has not been sent today")
 		}
 
 		es, err := GetEventStatus()
 		if err != nil {
-			log.Fatal("Error getting event status")
+			logger.ErrorLogger.Println("failed to retrieve event status data from /event-status")
+			return
 		}
 
 		ba := es.BonusAdded(time.Now().AddDate(0, 0, -1))
-		if (ba) {
-			fmt.Print("Bonus points have been added!.\n")
+		if ba {
+			logger.InfoLogger.Println("bonus points have been applied")
 
-			dispatchLeagueMessage()
+			err := dispatchLeagueMessage()
+			if err != nil {
+				return
+			}
 			messageSentToday = true
 		} else {
-			fmt.Print("Bonus points not added yet.\n")
+			logger.InfoLogger.Println("bonus points have not been applied")
 		}
 	})
-	
+
 	c.Start()
+	logger.InfoLogger.Println("cron initiated")
 }
 
-func dispatchLeagueMessage() {
+func dispatchLeagueMessage() error {
 	id, _ := strconv.Atoi(os.Getenv("LEAGUE_ID"))
 
 	league, err := GetLeague(id)
 	if err != nil {
-		log.Printf("Error fetching league data for ID %d: %v\n", id, err)
+		logger.ErrorLogger.Printf("error fetching league data for ID %d: %v\n", id, err)
+		return err
 	}
 
 	channelId := os.Getenv("CHANNEL_ID")
@@ -68,10 +68,13 @@ func dispatchLeagueMessage() {
 	var res *http.Response
 	res, err = discord.Send(channelId, league.String())
 	if err != nil {
-		log.Printf("Error sending discord message: %v\n", err)
+		logger.ErrorLogger.Printf("error sending discord message: %v\n", err)
+		return err
 	}
 
 	if res != nil {
-		fmt.Printf("Discord message sent successfully with code: %d\n", res.StatusCode)
+		logger.InfoLogger.Printf("discord message sent successfully with code: %d\n", res.StatusCode)
 	}
+
+	return nil
 }

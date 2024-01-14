@@ -1,9 +1,10 @@
 package models
 
 import (
-	"fmt"
-	"github.com/henryppercy/fpl-go-bot/internal/utils"
 	"time"
+
+	"github.com/henryppercy/fpl-go-bot/internal/logger"
+	"github.com/henryppercy/fpl-go-bot/internal/utils"
 )
 
 type status struct {
@@ -22,7 +23,7 @@ func (es EventStatus) DateInCurrentEvent(date time.Time) bool {
 	for _, status := range es.Status {
 		eventDate, err := time.Parse("2006-01-02", status.Date)
 		if err != nil {
-			fmt.Println("Error parsing date:", err)
+			logger.ErrorLogger.Panicln("error parsing date:", err)
 			continue
 		}
 
@@ -41,7 +42,7 @@ func (es EventStatus) BonusAdded(date time.Time) bool {
 	for _, status := range es.Status {
 		eventDate, err := time.Parse("2006-01-02", status.Date)
 		if err != nil {
-			fmt.Println("Error parsing date:", err)
+			logger.ErrorLogger.Panicln("error parsing date:", err)
 			continue
 		}
 
