@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -17,6 +18,7 @@ func main() {
 		logger.ErrorLogger.Fatal("error loading .env file")
 	}
 
+	fmt.Println("Application starting...")
 	fpl.IntiCron()
 
 	sig := make(chan os.Signal, 1)

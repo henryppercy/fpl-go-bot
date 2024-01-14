@@ -7,3 +7,6 @@ fmt:
 
 build:
 	cd cmd/fpl-go-bot && go build
+
+docker-image:
+	docker build -t fpl-go-bot .
