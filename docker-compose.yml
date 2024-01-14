@@ -4,5 +4,5 @@ services:
   fpl-go-bot:
     build: .
     volumes:
-      - /Users/henrypercy/go/src/github.com/henryppercy/fpl-go-bot/logs:/app/logs
+      - ./logs:/app/logs
     container_name: fpl-go-bot
