@@ -27,3 +27,6 @@ go.work
 
 /tmp
 log.txt
+
+# Executable binary
+cmd/fpl-go-bot/fpl-go-bot

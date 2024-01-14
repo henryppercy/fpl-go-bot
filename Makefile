@@ -4,3 +4,6 @@ run:
 
 fmt:
 	gofmt -w -s .
+
+build:
+	cd cmd/fpl-go-bot && go build
