@@ -6,11 +6,11 @@ A Go-based application designed to retrieve, format, and send Fantasy Premier Le
 - **Command Line Interface**: Accessible via command line by suppling the league ID as an argument.
 - **Discord Integration**: Sends a formatted version of an FPL table directly to any specified Discord channel.
 - **Detailed Standings**: Includes teams, current positions, total points, and recent movements in the league standings.
+- **Automated Updates**: Utilises a cron job to send regular updates.
+- **Docker Integration**: Containerises the application for easier deployment and management.
 
 ## Future Plans
 This is a work in progress, so in future I plan to add:
-- **Automated Updates**: Implementing a cron job to send regular updates, ensuring you never miss the latest standings.
-- **Diverse Hosting Options**: Plans to support various hosting solutions to enhance accessibility and ease of use.
 - **Expanded Notification Methods**: Beyond Discord, future integrations may include email, text messages, Twitter updates, and more.
 - **Live Scoring**: Get live scoring updates during gameweeks for your chosen teams.
 - **User-Friendly Frontend**: Frontend interface for easy configuration and settings management.
