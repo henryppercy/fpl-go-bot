@@ -1,7 +1,6 @@
 package fpl
 
 import (
-	"net/http"
 	"os"
 	"strconv"
 	"time"
@@ -12,6 +11,7 @@ import (
 )
 
 var messageSentToday bool
+var noFootballYesterday bool
 
 func IntiCron() {
 	c := cron.New()
@@ -23,6 +23,11 @@ func IntiCron() {
 	})
 
 	c.AddFunc(("0 11-15 * * *"), func() {
+		if noFootballYesterday {
+			logger.InfoLogger.Println("no football played yesterday")
+			return
+		}
+
 		if messageSentToday {
 			logger.InfoLogger.Println("message has already been sent today")
 			return
@@ -33,6 +38,14 @@ func IntiCron() {
 		es, err := GetEventStatus()
 		if err != nil {
 			logger.ErrorLogger.Println("failed to retrieve event status data from /event-status")
+			return
+		}
+
+		fy := es.DateInCurrentEvent(time.Now().AddDate(0, 0, -1))
+
+		if !fy {
+			logger.InfoLogger.Println("no football played yesterday")
+			noFootballYesterday = true
 			return
 		}
 
@@ -63,17 +76,9 @@ func dispatchLeagueMessage() error {
 		return err
 	}
 
-	channelId := os.Getenv("CHANNEL_ID")
-
-	var res *http.Response
-	res, err = discord.Send(channelId, league.String())
+	err = discord.DispatchMessage(league.String())
 	if err != nil {
-		logger.ErrorLogger.Printf("error sending discord message: %v\n", err)
 		return err
-	}
-
-	if res != nil {
-		logger.InfoLogger.Printf("discord message sent successfully with code: %d\n", res.StatusCode)
 	}
 
 	return nil
