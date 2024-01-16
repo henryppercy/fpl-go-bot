@@ -21,7 +21,7 @@ func main() {
 
 	fmt.Println("Application starting...")
 	fpl.IntiCron()
-	discord.DispatchInitMessage()
+	discord.DispatchUpdatedMessage()
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)

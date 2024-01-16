@@ -46,10 +46,8 @@ func Send(id, content string) (*http.Response, error) {
 	return res, nil
 }
 
-func DispatchInitMessage() error {
+func DispatchMessage(msg string) error {
 	channelId := os.Getenv("CHANNEL_ID")
-
-	msg := "*🤖 FPL Go Bot has been initialised*"
 
 	var res *http.Response
 	res, err := Send(channelId, msg)
@@ -57,9 +55,29 @@ func DispatchInitMessage() error {
 		logger.ErrorLogger.Printf("error sending discord message: %v\n", err)
 		return err
 	}
-
+	
 	if res != nil {
 		logger.InfoLogger.Printf("discord message sent successfully with code: %d\n", res.StatusCode)
+	}
+	
+	return nil
+}
+
+func DispatchInitMessage() error {
+	err := DispatchMessage("*🤖 FPL Go Bot has been initialised*")
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DispatchUpdatedMessage() error {
+	err := DispatchMessage("*🤖 FPL Go Bot has been updated*")
+
+	if err != nil {
+		return err
 	}
 
 	return nil
