@@ -59,11 +59,11 @@ func DispatchMessage(msg string) error {
 		logger.ErrorLogger.Printf("error sending discord message: %v\n", err)
 		return err
 	}
-	
+
 	if res != nil {
 		logger.InfoLogger.Printf("discord message sent successfully with code: %d\n", res.StatusCode)
 	}
-	
+
 	return nil
 }
 
