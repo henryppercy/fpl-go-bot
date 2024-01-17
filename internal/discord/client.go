@@ -10,6 +10,10 @@ import (
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
 )
 
+type Body struct {
+	Content string `json:"content"`
+}
+
 func Send(id, content string) (*http.Response, error) {
 	token := os.Getenv("BOT_TOKEN")
 	url := fmt.Sprintf("%s/channels/%s/messages", os.Getenv("DISCORD_URL"), id)
