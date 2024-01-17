@@ -8,7 +8,7 @@ import (
 	"syscall"
 
 	"github.com/henryppercy/fpl-go-bot/internal/discord"
-	"github.com/henryppercy/fpl-go-bot/internal/fpl"
+	"github.com/henryppercy/fpl-go-bot/internal/service"
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
 	"github.com/joho/godotenv"
 )
@@ -20,7 +20,7 @@ func main() {
 	}
 
 	fmt.Println("Application starting...")
-	fpl.IntiCron()
+	service.InitialiseFplCronJobs()
 	discord.DispatchUpdatedMessage()
 
 	sig := make(chan os.Signal, 1)
