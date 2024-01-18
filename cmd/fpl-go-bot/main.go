@@ -20,7 +20,7 @@ func main() {
 	}
 
 	fmt.Println("Application starting...")
-	service.InitialiseFplCronJobs()
+	service.ScheduleFplJobs()
 	discord.DispatchUpdatedMessage()
 
 	sig := make(chan os.Signal, 1)

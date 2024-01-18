@@ -14,7 +14,7 @@ import (
 var messageSentToday bool
 var noFootballYesterday bool
 
-func InitialiseFplCronJobs() {
+func ScheduleFplJobs() {
 	scheduler := scheduler.NewCronScheduler()
 
 	_, err := scheduler.ScheduleTask("0 16 * * *", resetMessageSentBoolean)
