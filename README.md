@@ -3,7 +3,6 @@
 A Go-based application designed to retrieve, format, and send Fantasy Premier League standings to your Discord channel. This simple tool transforms raw league data into an easy-to-read and fun format, providing quick updates directly to your league channel.
 
 ## Current Features
-- **Command Line Interface**: Accessible via command line by suppling the league ID as an argument.
 - **Discord Integration**: Sends a formatted version of an FPL table directly to any specified Discord channel.
 - **Detailed Standings**: Includes teams, current positions, total points, and recent movements in the league standings.
 - **Automated Updates**: Utilises a cron job to send regular updates.
