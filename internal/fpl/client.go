@@ -66,7 +66,7 @@ func GetLeague(leagueId int) (models.LeagueData, error) {
 	return leagueData, nil
 }
 
-func getBootstrap() (models.LeagueBootstrap, error) {
+func GetBootstrap() (models.LeagueBootstrap, error) {
 	url := "https://fantasy.premierleague.com/api/bootstrap-static/"
 
 	var leagueData models.LeagueBootstrap

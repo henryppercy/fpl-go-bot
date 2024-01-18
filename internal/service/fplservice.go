@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -27,7 +28,32 @@ func ScheduleFplJobs() {
 		logger.ErrorLogger.Println("failed to schedule league update task")
 	}
 
+	_, err = scheduler.ScheduleTask("0 9 * * *", checkAndSendDeadlineReminder)
+	if err != nil {
+		logger.ErrorLogger.Println("failed to schedule deadline update task")
+	}
+
 	scheduler.StartScheduler()
+}
+
+func checkAndSendDeadlineReminder() {
+	lb, err := fpl.GetBootstrap()
+	if err != nil {
+		logger.ErrorLogger.Println("unable to retrieve league bootstrap data")
+		return
+	}
+
+	event, exists := lb.GetNextEvent()
+	
+	if exists && event.IsDeadlineDay() {
+		err := discord.DispatchMessage(event.FormatDeadlineMessage())
+		if err != nil {
+			logger.ErrorLogger.Println(err)
+			return
+		}
+	}
+	
+	logger.InfoLogger.Println("not deadline day")
 }
 
 func resetMessageSentBoolean() {
