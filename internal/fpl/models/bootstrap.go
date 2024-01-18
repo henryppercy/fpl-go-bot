@@ -1,8 +1,14 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
 
-type event struct {
+	"github.com/henryppercy/fpl-go-bot/internal/utils"
+)
+
+type Event struct {
 	ID                     int            `json:"id"`
 	Name                   string         `json:"name"`
 	DeadlineTime           time.Time      `json:"deadline_time"`
@@ -213,7 +219,7 @@ type elementType struct {
 }
 
 type LeagueBootstrap struct {
-	Events       []event       `json:"events"`
+	Events       []Event       `json:"events"`
 	GameSettings gameSettings  `json:"game_settings"`
 	Phases       []phase       `json:"phases"`
 	Teams        []team        `json:"teams"`
@@ -222,3 +228,51 @@ type LeagueBootstrap struct {
 	ElementStats []elementStat `json:"element_stats"`
 	ElementTypes []elementType `json:"element_types"`
 }
+
+func (lb LeagueBootstrap) GetCurrentEvent() (Event, bool) {
+	for _, event := range lb.Events {
+		if event.IsCurrent {
+			return event, true
+		}
+	}
+
+	return Event{}, false
+}
+
+func (lb LeagueBootstrap) GetNextEvent() (Event, bool) {
+	for _, event := range lb.Events {
+		if event.IsNext {
+			return event, true
+		}
+	}
+
+	return Event{}, false
+}
+
+func (lb LeagueBootstrap) GetPrevEvent() (Event, bool) {
+	for _, event := range lb.Events {
+		if event.IsPrevious {
+			return event, true
+		}
+	}
+
+	return Event{}, false
+}
+
+func (e Event) IsDeadlineDay() bool {
+	if utils.SameDate(e.DeadlineTime, time.Now()) {
+		return true
+	}
+
+	return false
+}
+
+func (e Event) FormatDeadlineMessage() string {
+	var sb strings.Builder
+
+	sb.WriteString(fmt.Sprint("**📢 DEADLINE DAY**\n\n"))
+	sb.WriteString(fmt.Sprintf("Gameweek %d Deadline: **%s**", e.ID, e.DeadlineTime.Format("Monday 02 Jan, 15:04")))
+
+	return sb.String()
+}
+
