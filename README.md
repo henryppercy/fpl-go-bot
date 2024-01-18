@@ -5,6 +5,7 @@ A Go-based application designed to retrieve, format, and send Fantasy Premier Le
 ## Current Features
 - **Discord Integration**: Sends a formatted version of an FPL table directly to any specified Discord channel.
 - **Detailed Standings**: Includes teams, current positions, total points, and recent movements in the league standings.
+- **Deadline Reminders**: Reminder to select your team the morning of deadline day.
 - **Automated Updates**: Utilises a cron job to send regular updates.
 - **Docker Integration**: Containerises the application for easier deployment and management.
 
