@@ -275,4 +275,3 @@ func (e Event) FormatDeadlineMessage() string {
 
 	return sb.String()
 }
-

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -44,7 +43,7 @@ func checkAndSendDeadlineReminder() {
 	}
 
 	event, exists := lb.GetNextEvent()
-	
+
 	if exists && event.IsDeadlineDay() {
 		err := discord.DispatchMessage(event.FormatDeadlineMessage())
 		if err != nil {
@@ -52,7 +51,7 @@ func checkAndSendDeadlineReminder() {
 			return
 		}
 	}
-	
+
 	logger.InfoLogger.Println("not deadline day")
 }
 

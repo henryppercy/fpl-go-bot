@@ -8,8 +8,8 @@ import (
 	"syscall"
 
 	"github.com/henryppercy/fpl-go-bot/internal/discord"
-	"github.com/henryppercy/fpl-go-bot/internal/service"
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
+	"github.com/henryppercy/fpl-go-bot/internal/service"
 	"github.com/joho/godotenv"
 )
 
