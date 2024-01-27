@@ -1,12 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
 
+	"github.com/henryppercy/fpl-go-bot/internal/api"
 	"github.com/henryppercy/fpl-go-bot/internal/discord"
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
 	"github.com/henryppercy/fpl-go-bot/internal/service"
@@ -23,10 +22,10 @@ func main() {
 	service.ScheduleFplJobs()
 	discord.DispatchUpdatedMessage()
 
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	listenAddr := flag.String("listenaddr", ":3000", "the server address")
+	flag.Parse()
 
-	<-sig
-	logger.WarningLogger.Println("shutting down the application")
-	log.Println("Shutting down the application")
+	server := api.NewServer(*listenAddr)
+	fmt.Println("server running on port: ", *listenAddr)
+	log.Fatal(server.Start())
 }
