@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/henryppercy/fpl-go-bot/internal/utils"
+	"github.com/henryppercy/fpl-go-bot/internal/date"
 )
 
 type Event struct {
@@ -260,7 +260,7 @@ func (lb LeagueBootstrap) GetPrevEvent() (Event, bool) {
 }
 
 func (e Event) IsDeadlineDay() bool {
-	if utils.SameDate(e.DeadlineTime, time.Now()) {
+	if date.SameDate(e.DeadlineTime, time.Now()) {
 		return true
 	}
 

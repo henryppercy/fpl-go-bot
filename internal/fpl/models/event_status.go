@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/henryppercy/fpl-go-bot/internal/logger"
-	"github.com/henryppercy/fpl-go-bot/internal/utils"
+	"github.com/henryppercy/fpl-go-bot/internal/date"
 )
 
 type status struct {
@@ -19,7 +19,7 @@ type EventStatus struct {
 	Leagues string   `json:"leagues"`
 }
 
-func (es EventStatus) DateInCurrentEvent(date time.Time) bool {
+func (es EventStatus) DateInCurrentEvent(d time.Time) bool {
 	for _, status := range es.Status {
 		eventDate, err := time.Parse("2006-01-02", status.Date)
 		if err != nil {
@@ -27,15 +27,15 @@ func (es EventStatus) DateInCurrentEvent(date time.Time) bool {
 			continue
 		}
 
-		if utils.SameDate(eventDate, date) {
+		if date.SameDate(eventDate, d) {
 			return true
 		}
 	}
 	return false
 }
 
-func (es EventStatus) BonusAdded(date time.Time) bool {
-	if !es.DateInCurrentEvent(date) {
+func (es EventStatus) BonusAdded(d time.Time) bool {
+	if !es.DateInCurrentEvent(d) {
 		return false
 	}
 
@@ -46,7 +46,7 @@ func (es EventStatus) BonusAdded(date time.Time) bool {
 			continue
 		}
 
-		if utils.SameDate(eventDate, date) && status.BonusAdded {
+		if date.SameDate(eventDate, d) && status.BonusAdded {
 			return true
 		}
 	}
